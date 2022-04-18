@@ -11,10 +11,10 @@ public class Main {
 		//asks user for target repo's root folder
 		Scanner input = new Scanner(System.in);
 		System.out.println("Please enter the path name to the target repo's root folder");
-		//String repoPath = input.nextLine();
+		String repoPath = input.nextLine();
 		
 		//creates new gitSubproccessClient with target repo's root folder
-		GitSubprocessClient gitSubprocessClient = new GitSubprocessClient("C:/Users/labbe/Documents/Eclipse Workspace/CSC_111/Monster Project");
+		GitSubprocessClient gitSubprocessClient = new GitSubprocessClient(repoPath);
 		String gitInit = gitSubprocessClient.gitInit();
 		
 		//asks user for username and token
