@@ -32,14 +32,24 @@ public class DrawingPanel extends JPanel {
 	private JRadioButton discription;
 	private JRadioButton noDiscription;
 	private JTextField discript;
+	private JButton disSubmit;
 	private JRadioButton priv;
 	private JRadioButton publ;
 	private JButton getUrl;
 	private JButton createRepo;
-	
+	private Sprite Qu;
+	private Sprite Micro;
+	private Sprite Disclamer;
 	
 	JLabel url1 = new JLabel("");
 	JLabel url2 = new JLabel("");
+	JLabel discriptionLabel = new JLabel("");
+	JLabel folderLabel  = new JLabel("");
+	JLabel userLabel  = new JLabel("");
+	JLabel tokenLabel  = new JLabel("");
+	JLabel repoNameLabel  = new JLabel("");
+	JLabel discriptionOptionLabel  = new JLabel("");
+	JLabel privpublic = new JLabel("");
 	
 	String repoPath = "";
 	String user = "";
@@ -54,11 +64,21 @@ public class DrawingPanel extends JPanel {
 	
     public DrawingPanel() {
         super();
-        this.setLayout(new FlowLayout());
+        
         this.setSize(1000, 800);
         this.setBackground(Color.white); 
         
-        JLabel folderLabel = new JLabel("Please enter the path name to the target repo's root folder:");
+        Qu = new Sprite("./images/QU.png"); //works like any shape with location size exc...
+		Qu.setLocation(100, 400);
+		Micro = new Sprite("./images/micro.png");
+		Micro.setLocation(500, 400);
+		Disclamer = new Sprite("./images/Prototype.png");
+		Disclamer.setHeight(150);
+		Disclamer.setWidth(500);
+		Disclamer.setLocation(250, 580);
+		
+        
+        folderLabel.setText("Please enter the path name to the target repo's root folder:");
         rootFolder = new JTextField(20);
         folderLabel.setLabelFor(rootFolder);
         rootFolder.setSize(50, 30);
@@ -70,9 +90,18 @@ public class DrawingPanel extends JPanel {
         rootSubmit.setSize(120,120);
         rootSubmit.setLocation(445,350);
         
+        folderLabel.setVisible(true);
+        rootFolder.setVisible(true);
+        rootSubmit.setVisible(true);
+        
         rootSubmit.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		repoPath= rootFolder.getText();
+        		folderLabel.setVisible(false);
+                rootFolder.setVisible(false);
+                rootSubmit.setVisible(false);
+                repo.setVisible(true);
+        		
         	}
         	
         });
@@ -86,21 +115,28 @@ public class DrawingPanel extends JPanel {
         repo.setText("Add Repo");
         repo.setSize(120,120);
         repo.setLocation(445,350);
+        repo.setVisible(false);
         repo.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		gitSubprocessClient = new GitSubprocessClient(repoPath);
         		String gitInit = gitSubprocessClient.gitInit();
+        		repo.setVisible(false);
+        		userLabel.setVisible(true);
+        		userin.setVisible(true);
+        		tokenLabel.setVisible(true);
+        		tokenin.setVisible(true);
+        		apiClient.setVisible(true);
         	}
         	
         });
        this.add(repo);
        
-       JLabel userLabel = new JLabel("Please enter your username:");
+       userLabel.setText("Please enter your username:");
        userin = new JTextField(20);
        folderLabel.setLabelFor(userin);
        userin.setSize(50, 30);
        userin.setLocation(100,30);
-       JLabel tokenLabel = new JLabel("Please enter your token:");
+       tokenLabel.setText("Please enter your token:");
        tokenin = new JTextField(20);
        folderLabel.setLabelFor(tokenin);
        tokenin.setSize(50, 30);
@@ -112,12 +148,21 @@ public class DrawingPanel extends JPanel {
        apiClient.setSize(120,120);
        apiClient.setLocation(445,350);
        
+       userLabel.setVisible(false);
+       userin.setVisible(false);
+       tokenLabel.setVisible(false);
+       tokenin.setVisible(false);
+       apiClient.setVisible(false);
+       
        
        apiClient.addActionListener(new ActionListener() {
        	public void actionPerformed(ActionEvent e) {
        		user = userin.getText();
        		token = tokenin.getText();
        		gitHubApiClient = new GitHubApiClient(user, token);
+       		repoNameLabel.setVisible(true);
+            repoNameIn.setVisible(true);
+            params.setVisible(true);
        	}
        	
        });
@@ -127,7 +172,7 @@ public class DrawingPanel extends JPanel {
        this.add(tokenin);
        this.add(apiClient);
        
-       JLabel repoNameLabel = new JLabel("Please enter the path name to the target repo's root folder:");
+       repoNameLabel.setText("Please enter the path name to the target repo's root folder:");
        repoNameIn = new JTextField(20);
        folderLabel.setLabelFor(repoNameIn);
        repoNameIn.setSize(50, 30);
@@ -138,6 +183,9 @@ public class DrawingPanel extends JPanel {
        params.setText("Submit");
        params.setSize(120,120);
        params.setLocation(445,350);
+       repoNameLabel.setVisible(false);
+       repoNameIn.setVisible(false);
+       params.setVisible(false);
        
        RequestParams requestParams = new RequestParams();
        params.addActionListener(new ActionListener() {
@@ -145,6 +193,9 @@ public class DrawingPanel extends JPanel {
        		name = repoNameIn.getText();
        		
     		requestParams.addParam("name", name);
+    		discriptionOptionLabel.setVisible(true);
+    	    discription.setVisible(true);
+    	    noDiscription.setVisible(true);
     		
           
        	}
@@ -157,7 +208,7 @@ public class DrawingPanel extends JPanel {
        
        
        
-       JLabel discriptionOptionLabel = new JLabel("Would you like to set a description for the repo?");
+       discriptionOptionLabel.setText("Would you like to set a description for the repo?");
        
        discription = new JRadioButton();
        discription.setOpaque(true);
@@ -167,7 +218,12 @@ public class DrawingPanel extends JPanel {
        discription.addActionListener(new ActionListener() {
     	   @Override
     	   public void actionPerformed(ActionEvent e) {
-    		   
+    		discriptionOptionLabel.setVisible(false);
+       	    discription.setVisible(false);
+       	    noDiscription.setVisible(false);
+    		discript.setVisible(true);
+    		discriptionLabel.setVisible(true);
+    		disSubmit.setVisible(true);
     	   }
     	   });
       
@@ -179,9 +235,19 @@ public class DrawingPanel extends JPanel {
        noDiscription.addActionListener(new ActionListener() {
     	   @Override
     	   public void actionPerformed(ActionEvent e) {
+    		discriptionOptionLabel.setVisible(false);
+       	    discription.setVisible(false);
+       	    noDiscription.setVisible(false);
+       	    privpublic.setVisible(true);
+       	    priv.setVisible(true);
+       	    publ.setVisible(true);
     		   
     	   }
     	   });
+       discriptionOptionLabel.setVisible(false);
+	   discription.setVisible(false);
+	   noDiscription.setVisible(false);
+	   
        discriptionOptionLabel.setLabelFor(discription);
        discriptionOptionLabel.setLabelFor(noDiscription);
        
@@ -197,31 +263,57 @@ public class DrawingPanel extends JPanel {
        this.add(noDiscription);
       
        
-       JLabel discriptionLabel = new JLabel("What would you like the description to be?");
+       discriptionLabel.setText("What would you like the description to be?");
        discript = new JTextField(20);
        discriptionLabel.setLabelFor(discript);
        discript.setSize(50, 30);
        discript.setLocation(100,30);
+       discript.setVisible(false);
+       discriptionLabel.setVisible(false);
       
-       des = discript.getText();
-       requestParams.addParam("description",des );
+       
+       disSubmit = new JButton();
+       disSubmit.setOpaque(true);
+       disSubmit.setText("Submit");
+       disSubmit.setSize(120,120);
+       disSubmit.setLocation(445,350);
+       disSubmit.setVisible(false);
+       disSubmit.addActionListener(new ActionListener() {
+    	   @Override
+    	   public void actionPerformed(ActionEvent e) {
+    		   des = discript.getText();
+    	       requestParams.addParam("description",des );
+    	       discript.setVisible(false);
+    	       discriptionLabel.setVisible(false);
+    	       disSubmit.setVisible(false);
+    	       privpublic.setVisible(true);
+          	   priv.setVisible(true);
+          	   publ.setVisible(true);
+    	   }
+       });
+    	  
        this.add(discriptionLabel);
        this.add(discript);
+       this.add(disSubmit);
            
        
        
        
-       JLabel privpublic  = new JLabel("Would you like to make the repo private?");
+       privpublic.setText("Would you like to make the repo private?");
        
        priv = new JRadioButton();
        priv.setOpaque(true);
        priv.setText("Yes");
        priv.setSize(120,120);
        priv.setLocation(445,350);
+       privpublic.setVisible(false);
+  	   priv.setVisible(false);
+  	  
        priv.addActionListener(new ActionListener() {
     	   @Override
     	   public void actionPerformed(ActionEvent e) {
     		   requestParams.addParam("private", true);
+    		   createRepo.setVisible(true);
     	   }
     	   });
       
@@ -230,10 +322,12 @@ public class DrawingPanel extends JPanel {
        publ.setText("No");
        publ.setSize(120,120);
        publ.setLocation(445,350);
+       publ.setVisible(false);
+  	   
        publ.addActionListener(new ActionListener() {
     	   @Override
     	   public void actionPerformed(ActionEvent e) {
-    		   
+    		   createRepo.setVisible(true);
     	   }
     	   });
        privpublic.setLabelFor(priv);
@@ -252,6 +346,7 @@ public class DrawingPanel extends JPanel {
        createRepo.setText("Creat Repo");
        createRepo.setSize(120,120);
        createRepo.setLocation(445,350);
+       createRepo.setVisible(false);
        createRepo.addActionListener(new ActionListener() {
     	   @Override
     	   public void actionPerformed(ActionEvent e) {
@@ -262,6 +357,9 @@ public class DrawingPanel extends JPanel {
     			String gitAddAll = gitSubprocessClient.gitAddAll();
     			String commit = gitSubprocessClient.gitCommit("initial commit");
     			String push = gitSubprocessClient.gitPush("master");
+    			createRepo.setVisible(false);
+    			url1.setVisible(true);
+    			getUrl.setVisible(true);
     	   }
     	   });
        
@@ -273,11 +371,16 @@ public class DrawingPanel extends JPanel {
        getUrl.setText("Get url");
        getUrl.setSize(120,120);
        getUrl.setLocation(445,350);
+       url1.setVisible(false);
+       getUrl.setVisible(false);
+       url2.setVisible(false);
+	
        getUrl.addActionListener(new ActionListener() {
     	   @Override
     	   public void actionPerformed(ActionEvent e) {
     		   
     		   url2.setText(url);
+    		   url2.setVisible(true);
     	   }
     	   });
        this.add(url1);
@@ -289,6 +392,9 @@ public class DrawingPanel extends JPanel {
     protected void paintComponent(Graphics g) {
     	super.paintComponent(g);
     	Graphics2D brush = (Graphics2D) g;
+    	Qu.paint(brush);
+    	Micro.paint(brush);
+    	Disclamer.paint(brush);
     	
         
     }
