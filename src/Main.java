@@ -3,6 +3,9 @@ import github.tools.client.RequestParams;
 import github.tools.responseObjects.*;
 import java.util.Scanner;
 import git.tools.client.GitSubprocessClient;
+import java.io.*;
+import java.util.Scanner;
+
 
 public class Main {
 
@@ -18,10 +21,24 @@ public class Main {
 		String gitInit = gitSubprocessClient.gitInit();
 		
 		//asks user for username and token
-		System.out.println("Please enter your username and token");
+		System.out.println("Please enter your username");
 		String user = input.nextLine();
-		String token = input.nextLine();
-		
+
+		System.out.println("Would you like to manually enter your token? Enter Y or N");
+		String token = "";
+		if(input.nextLine().toUpperCase().equals("Y")){
+			token = input.nextLine();
+		}else{
+			System.out.println("Please put your token on the first line of the token.txt file");
+			try{
+				FileInputStream inputStream = new FileInputStream("token.txt");
+				Scanner scanner = new Scanner(inputStream);
+				token = scanner.nextLine();
+			}catch (FileNotFoundException ex){
+				System.out.println("Could not find file");
+			}
+		}
+
 		//creates new gitHubApiClient with respective username and token 
 		GitHubApiClient gitHubApiClient = new GitHubApiClient(user, token);
 		
