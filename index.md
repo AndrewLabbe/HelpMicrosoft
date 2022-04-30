@@ -9,6 +9,9 @@
     asynchronously through using collaboration tools provided by Git.
     This project is meant to be a prototype.
 
+### About the Code
+    Minimum Java 1.8 Required To run this project, clone code into a IDE and press the run button.
+
 ### Developers 
     CSC109 Students Andrew Labbe, Mia Troiano, and Emily Balboni worked together
     on this project.  
