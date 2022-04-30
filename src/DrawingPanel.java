@@ -172,7 +172,7 @@ public class DrawingPanel extends JPanel {
        this.add(tokenin);
        this.add(apiClient);
        
-       repoNameLabel.setText("Please enter the path name to the target repo's root folder:");
+       repoNameLabel.setText("Please enter desired name for repo:");
        repoNameIn = new JTextField(20);
        folderLabel.setLabelFor(repoNameIn);
        repoNameIn.setSize(50, 30);
