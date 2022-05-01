@@ -6,6 +6,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -26,6 +28,7 @@ public class DrawingPanel extends JPanel {
 	private JButton rootSubmit;
 	private JTextField userin;
 	private JTextField tokenin;
+	private JTextField tokenD;
 	private JButton apiClient;
 	private JTextField repoNameIn;
 	private JButton params;
@@ -47,6 +50,7 @@ public class DrawingPanel extends JPanel {
 	JLabel folderLabel  = new JLabel("");
 	JLabel userLabel  = new JLabel("");
 	JLabel tokenLabel  = new JLabel("");
+	JLabel tokenDec = new JLabel("");
 	JLabel repoNameLabel  = new JLabel("");
 	JLabel discriptionOptionLabel  = new JLabel("");
 	JLabel privpublic = new JLabel("");
@@ -136,11 +140,26 @@ public class DrawingPanel extends JPanel {
        folderLabel.setLabelFor(userin);
        userin.setSize(50, 30);
        userin.setLocation(100,30);
-       tokenLabel.setText("Please enter your token:");
-       tokenin = new JTextField(20);
-       folderLabel.setLabelFor(tokenin);
-       tokenin.setSize(50, 30);
-       tokenin.setLocation(100,30);
+       
+       
+       tokenDec.setText("Would you like to enter your token? Y|N");
+       tokenD = new JTextField(20);
+       if(tokenD.getText().toUpperCase().equals("Y")) {
+    	   tokenin = new JTextField(20);
+           folderLabel.setLabelFor(tokenin);
+           tokenin.setSize(50, 30);
+           tokenin.setLocation(100,30);
+           token = tokenin.getText();
+       }else {
+    	   System.out.println("Token will be read from token.txt file");
+    	   try{
+				FileInputStream inputStream = new FileInputStream("token.txt");
+				Scanner scanner = new Scanner(inputStream);
+				token = scanner.nextLine();
+			}catch (FileNotFoundException ex){
+				System.out.println("Could not find file");
+			}
+       }
        
        apiClient = new JButton();
        apiClient.setOpaque(true);
@@ -158,7 +177,7 @@ public class DrawingPanel extends JPanel {
        apiClient.addActionListener(new ActionListener() {
        	public void actionPerformed(ActionEvent e) {
        		user = userin.getText();
-       		token = tokenin.getText();
+       		//replaced line setting token with code above 
        		gitHubApiClient = new GitHubApiClient(user, token);
        		repoNameLabel.setVisible(true);
             repoNameIn.setVisible(true);
