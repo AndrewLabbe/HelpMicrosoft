@@ -11,6 +11,8 @@
 
 ### About the Code
     Minimum Java 1.8 Required To run this project, clone code into a IDE and press the run button.
+    Run from DrawingPanel class. The main class was used to layout the logic for the program but is not
+    used in the prototype. 
 
 ### Developers 
     CSC109 Students Andrew Labbe, Mia Troiano, and Emily Balboni worked together
