@@ -96,7 +96,8 @@ public class DrawingPanel extends JPanel {
         
         rootSubmit.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-        		repoPath= rootFolder.getText();
+        		repoPath = rootFolder.getText();
+        		System.out.println(repoPath);
         		folderLabel.setVisible(false);
                 rootFolder.setVisible(false);
                 rootSubmit.setVisible(false);
@@ -158,7 +159,9 @@ public class DrawingPanel extends JPanel {
        apiClient.addActionListener(new ActionListener() {
        	public void actionPerformed(ActionEvent e) {
        		user = userin.getText();
+       		System.out.println(user);
        		token = tokenin.getText();
+       		System.out.println(token);
        		gitHubApiClient = new GitHubApiClient(user, token);
        		repoNameLabel.setVisible(true);
             repoNameIn.setVisible(true);
@@ -191,7 +194,7 @@ public class DrawingPanel extends JPanel {
        params.addActionListener(new ActionListener() {
        	public void actionPerformed(ActionEvent e) {
        		name = repoNameIn.getText();
-       		
+       		System.out.println(name);
     		requestParams.addParam("name", name);
     		discriptionOptionLabel.setVisible(true);
     	    discription.setVisible(true);
@@ -282,7 +285,8 @@ public class DrawingPanel extends JPanel {
     	   @Override
     	   public void actionPerformed(ActionEvent e) {
     		   des = discript.getText();
-    	       requestParams.addParam("description",des );
+    	       requestParams.addParam("description", des);
+    	       System.out.println(des);
     	       discript.setVisible(false);
     	       discriptionLabel.setVisible(false);
     	       disSubmit.setVisible(false);
@@ -353,6 +357,8 @@ public class DrawingPanel extends JPanel {
     		   CreateRepoResponse createRepoResponse = gitHubApiClient.createRepo(requestParams);
     		   GetRepoInfoResponse repoInfo = gitHubApiClient.getRepoInfo(user, name);
     		   url = repoInfo.getJson().get("html_url").getAsString();
+    		   //String gitAddGitIgnore = gitSubprocessClient.gitAddFile("./Files/.gitignore");
+    		   //String gitAddREADME = gitSubprocessClient.gitAddFile("./Files/README.md");
     		   String gitRemoteAdd = gitSubprocessClient.gitRemoteAdd("origin", url);
     			String gitAddAll = gitSubprocessClient.gitAddAll();
     			String commit = gitSubprocessClient.gitCommit("initial commit");
