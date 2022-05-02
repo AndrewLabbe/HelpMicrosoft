@@ -32,8 +32,8 @@ public class DrawingPanel extends JPanel {
 	private JButton apiClient;
 	private JTextField repoNameIn;
 	private JButton params;
-	private JRadioButton discription;
-	private JRadioButton noDiscription;
+	private JRadioButton discription, tokenYes;
+	private JRadioButton noDiscription, tokenNo;
 	private JTextField discript;
 	private JButton disSubmit;
 	private JRadioButton priv;
@@ -50,10 +50,11 @@ public class DrawingPanel extends JPanel {
 	JLabel folderLabel  = new JLabel("");
 	JLabel userLabel  = new JLabel("");
 	JLabel tokenLabel  = new JLabel("");
-	JLabel tokenDec = new JLabel("");
 	JLabel repoNameLabel  = new JLabel("");
 	JLabel discriptionOptionLabel  = new JLabel("");
 	JLabel privpublic = new JLabel("");
+	JLabel tokenDecision = new JLabel("");
+	
 	
 	String repoPath = "";
 	String user = "";
@@ -63,7 +64,6 @@ public class DrawingPanel extends JPanel {
 	String url = "";
 	GitHubApiClient gitHubApiClient;
 	GitSubprocessClient gitSubprocessClient;
-	
 	
 	
     public DrawingPanel() {
@@ -81,6 +81,7 @@ public class DrawingPanel extends JPanel {
 		Disclamer.setWidth(500);
 		Disclamer.setLocation(250, 580);
 		
+	
         
         folderLabel.setText("Please enter the path name to the target repo's root folder:");
         rootFolder = new JTextField(20);
@@ -142,47 +143,18 @@ public class DrawingPanel extends JPanel {
        userin.setSize(50, 30);
        userin.setLocation(100,30);
      
-       
-       tokenDec.setText("Would you like to enter your token? Y|N");
-       tokenD = new JTextField(20);
-       folderLabel.setLabelFor(tokenDec);
-       tokenD.setSize(50,30);
-       tokenD.setLocation(300,30);
-       
       
-       tokenin = new JTextField(20);
-       //tokenin.setVisible(false);
-       
-       if(tokenD.getText().toUpperCase().equals("Y")) {
-    	   tokenin.setVisible(true);
-           folderLabel.setLabelFor(tokenin);
-           tokenin.setSize(50, 30);
-           tokenin.setLocation(300,30);
-           token = tokenin.getText();
-       }else {
-    	   System.out.println("Token will be read from token.txt file");
-    	   try{
-				FileInputStream inputStream = new FileInputStream("token.txt");
-				Scanner scanner = new Scanner(inputStream);
-				token = scanner.nextLine();
-				scanner.close();
-			}catch (FileNotFoundException ex){
-				System.out.println("Could not find file");
-			}
-       }
-       
        apiClient = new JButton();
        apiClient.setOpaque(true);
        apiClient.setText("Submit");
        apiClient.setSize(120,120);
        apiClient.setLocation(445,350);
-       
-       tokenD.setVisible(false);
+      
        userLabel.setVisible(false);
        userin.setVisible(false);
        tokenLabel.setVisible(false);
-       tokenin.setVisible(false);
        apiClient.setVisible(false);
+       
        
        
        apiClient.addActionListener(new ActionListener() {
@@ -193,12 +165,11 @@ public class DrawingPanel extends JPanel {
             repoNameIn.setVisible(true);
             params.setVisible(true);
        	}
-       	
        });
+       
        this.add(userLabel);
        this.add(userin);
        this.add(tokenLabel);
-       this.add(tokenin);
        this.add(apiClient);
        
        repoNameLabel.setText("Please enter desired name for repo:");
@@ -220,13 +191,10 @@ public class DrawingPanel extends JPanel {
        params.addActionListener(new ActionListener() {
        	public void actionPerformed(ActionEvent e) {
        		name = repoNameIn.getText();
-       		
     		requestParams.addParam("name", name);
     		discriptionOptionLabel.setVisible(true);
     	    discription.setVisible(true);
     	    noDiscription.setVisible(true);
-    		
-          
        	}
        	
        });
@@ -284,9 +252,6 @@ public class DrawingPanel extends JPanel {
        discriptionGroup.add(discription);
        discriptionGroup.add(noDiscription);
        
-       
-       
-       
        this.add(discriptionOptionLabel);
        this.add(discription);
        this.add(noDiscription);
@@ -342,7 +307,9 @@ public class DrawingPanel extends JPanel {
     	   @Override
     	   public void actionPerformed(ActionEvent e) {
     		   requestParams.addParam("private", true);
-    		   createRepo.setVisible(true);
+    		   tokenYes.setVisible(true);
+    		   tokenNo.setVisible(true);
+    		   tokenDecision.setVisible(true);
     	   }
     	   });
       
@@ -356,7 +323,10 @@ public class DrawingPanel extends JPanel {
        publ.addActionListener(new ActionListener() {
     	   @Override
     	   public void actionPerformed(ActionEvent e) {
-    		   createRepo.setVisible(true);
+    		  // createRepo.setVisible(true);
+    		   tokenYes.setVisible(true);
+    		   tokenNo.setVisible(true);
+    		   tokenDecision.setVisible(true);
     	   }
     	   });
        privpublic.setLabelFor(priv);
@@ -369,6 +339,81 @@ public class DrawingPanel extends JPanel {
        this.add(privpublic);
        this.add(priv);
        this.add(publ);
+       
+       
+       tokenDecision.setText("Would you like to enter your token?");
+       JRadioButton tokenYes = new JRadioButton();
+       tokenYes.setOpaque(true);
+       tokenYes.setText("Yes");
+       tokenYes.setSize(120,120);
+       tokenYes.setLocation(445,350);
+       tokenYes.addActionListener(new ActionListener() {
+    	   @Override
+    	   public void actionPerformed(ActionEvent e) {
+    		tokenDecision.setVisible(false);
+    		tokenYes.setVisible(false);
+    		tokenNo.setVisible(false);
+    		createRepo.setVisible(true);
+    		//code to take in text from JText File
+       	    //code to show the next create repo button
+    	   }
+    	   });
+       
+       JRadioButton tokenNo = new JRadioButton();
+       tokenNo.setOpaque(true);
+       tokenNo.setText("No");
+       tokenNo.setSize(120,120);
+       tokenNo.setLocation(445,350);
+       tokenNo.addActionListener(new ActionListener(){
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			System.out.println("Token will be read from token.txt file");
+			tokenYes.setVisible(false);
+			tokenDecision.setVisible(false);
+			tokenNo.setVisible(false);
+			createRepo.setVisible(true);
+	    	   try{
+					FileInputStream inputStream = new FileInputStream("token.txt");
+					Scanner scanner = new Scanner(inputStream);
+					token = scanner.nextLine();
+					scanner.close();
+				}catch (FileNotFoundException ex){
+					System.out.println("Could not find file");
+				}
+		}
+       });
+       
+       tokenDecision.setLabelFor(tokenNo);
+       tokenDecision.setLabelFor(tokenYes);
+       
+       ButtonGroup token = new ButtonGroup();
+       token.add(tokenNo);
+       token.add(tokenYes);
+       
+       this.add(tokenYes);
+       this.add(tokenNo);
+       this.add(tokenDecision);
+      
+       
+      /*
+       if(tokenD.getText().toUpperCase().equals("Y")) {
+    	   tokenin.setVisible(true);
+           folderLabel.setLabelFor(tokenin);
+           tokenin.setSize(50, 30);
+           tokenin.setLocation(300,30);
+           token = tokenin.getText();
+       }else {
+    	   System.out.println("Token will be read from token.txt file");
+    	   try{
+				FileInputStream inputStream = new FileInputStream("token.txt");
+				Scanner scanner = new Scanner(inputStream);
+				token = scanner.nextLine();
+				scanner.close();
+			}catch (FileNotFoundException ex){
+				System.out.println("Could not find file");
+			}
+       }
+       */
        
        createRepo = new JButton();
        createRepo.setOpaque(true);
