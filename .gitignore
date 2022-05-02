@@ -1,5 +1,6 @@
 .project
 .classpath
+token.txt
 *.class
 bin/
 .settings/

@@ -127,9 +127,10 @@ public class DrawingPanel extends JPanel {
         		repo.setVisible(false);
         		userLabel.setVisible(true);
         		userin.setVisible(true);
-        		tokenLabel.setVisible(true);
-        		tokenin.setVisible(true);
+        		tokenLabel.setVisible(false);
+        		tokenin.setVisible(false);
         		apiClient.setVisible(true);
+        		tokenD.setVisible(true);
         	}
         	
         });
@@ -140,15 +141,23 @@ public class DrawingPanel extends JPanel {
        folderLabel.setLabelFor(userin);
        userin.setSize(50, 30);
        userin.setLocation(100,30);
-       
+     
        
        tokenDec.setText("Would you like to enter your token? Y|N");
        tokenD = new JTextField(20);
+       folderLabel.setLabelFor(tokenDec);
+       tokenD.setSize(50,30);
+       tokenD.setLocation(300,30);
+       
+      
+       tokenin = new JTextField(20);
+       //tokenin.setVisible(false);
+       
        if(tokenD.getText().toUpperCase().equals("Y")) {
-    	   tokenin = new JTextField(20);
+    	   tokenin.setVisible(true);
            folderLabel.setLabelFor(tokenin);
            tokenin.setSize(50, 30);
-           tokenin.setLocation(100,30);
+           tokenin.setLocation(300,30);
            token = tokenin.getText();
        }else {
     	   System.out.println("Token will be read from token.txt file");
@@ -156,6 +165,7 @@ public class DrawingPanel extends JPanel {
 				FileInputStream inputStream = new FileInputStream("token.txt");
 				Scanner scanner = new Scanner(inputStream);
 				token = scanner.nextLine();
+				scanner.close();
 			}catch (FileNotFoundException ex){
 				System.out.println("Could not find file");
 			}
@@ -167,6 +177,7 @@ public class DrawingPanel extends JPanel {
        apiClient.setSize(120,120);
        apiClient.setLocation(445,350);
        
+       tokenD.setVisible(false);
        userLabel.setVisible(false);
        userin.setVisible(false);
        tokenLabel.setVisible(false);
@@ -176,8 +187,7 @@ public class DrawingPanel extends JPanel {
        
        apiClient.addActionListener(new ActionListener() {
        	public void actionPerformed(ActionEvent e) {
-       		user = userin.getText();
-       		//replaced line setting token with code above 
+       		user = userin.getText(); 
        		gitHubApiClient = new GitHubApiClient(user, token);
        		repoNameLabel.setVisible(true);
             repoNameIn.setVisible(true);
@@ -373,8 +383,8 @@ public class DrawingPanel extends JPanel {
     		   GetRepoInfoResponse repoInfo = gitHubApiClient.getRepoInfo(user, name);
     		   url = repoInfo.getJson().get("html_url").getAsString();
     		   String gitRemoteAdd = gitSubprocessClient.gitRemoteAdd("origin", url);
-    			String gitAddAll = gitSubprocessClient.gitAddAll();
-    			String commit = gitSubprocessClient.gitCommit("initial commit");
+    		   String gitAddAll = gitSubprocessClient.gitAddAll();
+    		   String commit = gitSubprocessClient.gitCommit("initial commit");
     			String push = gitSubprocessClient.gitPush("master");
     			createRepo.setVisible(false);
     			url1.setVisible(true);
@@ -414,9 +424,6 @@ public class DrawingPanel extends JPanel {
     	Qu.paint(brush);
     	Micro.paint(brush);
     	Disclamer.paint(brush);
-    	
-        
     }
-    
 }
         
