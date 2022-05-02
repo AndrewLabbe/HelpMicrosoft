@@ -129,9 +129,7 @@ public class DrawingPanel extends JPanel {
         		userLabel.setVisible(true);
         		userin.setVisible(true);
         		tokenLabel.setVisible(false);
-        		tokenin.setVisible(false);
         		apiClient.setVisible(true);
-        		tokenD.setVisible(true);
         	}
         	
         });
@@ -307,9 +305,14 @@ public class DrawingPanel extends JPanel {
     	   @Override
     	   public void actionPerformed(ActionEvent e) {
     		   requestParams.addParam("private", true);
+    		   //this code is not working either
+    		   priv.setVisible(false);
+    		   privpublic.setVisible(false);
+    		   publ.setVisible(false);
     		   tokenYes.setVisible(true);
     		   tokenNo.setVisible(true);
     		   tokenDecision.setVisible(true);
+    	
     	   }
     	   });
       
@@ -320,10 +323,15 @@ public class DrawingPanel extends JPanel {
        publ.setLocation(445,350);
        publ.setVisible(false);
   	   
+       
        publ.addActionListener(new ActionListener() {
     	   @Override
     	   public void actionPerformed(ActionEvent e) {
     		  // createRepo.setVisible(true);
+    		   //this code is not working properly
+    		   priv.setVisible(false);
+    		   privpublic.setVisible(false);
+    		   publ.setVisible(false);
     		   tokenYes.setVisible(true);
     		   tokenNo.setVisible(true);
     		   tokenDecision.setVisible(true);
@@ -347,6 +355,8 @@ public class DrawingPanel extends JPanel {
        tokenYes.setText("Yes");
        tokenYes.setSize(120,120);
        tokenYes.setLocation(445,350);
+       tokenDecision.setVisible(false);
+       tokenYes.setVisible(false);
        tokenYes.addActionListener(new ActionListener() {
     	   @Override
     	   public void actionPerformed(ActionEvent e) {
@@ -364,6 +374,7 @@ public class DrawingPanel extends JPanel {
        tokenNo.setText("No");
        tokenNo.setSize(120,120);
        tokenNo.setLocation(445,350);
+       tokenNo.setVisible(false);
        tokenNo.addActionListener(new ActionListener(){
 		@Override
 		public void actionPerformed(ActionEvent e) {
